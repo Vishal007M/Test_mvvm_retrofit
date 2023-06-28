@@ -66,11 +66,11 @@ public class StudentViewModel extends ViewModel {
             public void onResponse(@NonNull Call<List<Student>> call, @NonNull Response<List<Student>> response) {
 
                 try {
-                    if (response.body() != null) {
+                    if (response.body().isEmpty()) {
+                        studentGetData.setValue(Resource.error(Constant.SOMETHING_WRONG, null));
+                    } else {
                         List<Student> body = response.body();
                         studentGetData.setValue(Resource.success(body));
-                    } else {
-                        studentGetData.setValue(Resource.error(Constant.SOMETHING_WRONG, response.body()));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -94,14 +94,12 @@ public class StudentViewModel extends ViewModel {
         call.enqueue(new Callback<Student>() {
             @Override
             public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
-
                 try {
-                    if (response.isSuccessful()) {
-//                        studentIdData.setValue(Resource.success(response.body()));
-//                        studentIdData.setValue(Toast.makeText(getStudentListObserver()=,"gfgfgfgfg",Toast.LENGTH_SHORT).show());
+                    if (response.body() == null) {
+                        studentIdData.setValue(Resource.error(Constant.SOMETHING_WRONG, null));
                     } else {
-                        studentIdData.setValue(Resource.error(Constant.SOMETHING_WRONG, response.body()));
-
+                        Student body = response.body();
+                        studentIdData.setValue(Resource.success(body));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,7 +109,7 @@ public class StudentViewModel extends ViewModel {
             @Override
             public void onFailure(Call<Student> call, Throwable t) {
                 studentIdData.setValue(Resource.error(t.getMessage(), null));
-                Log.e("Error :", t.getMessage().toString());
+                Log.e("Error :", t.getMessage());
             }
         });
     }
@@ -126,12 +124,12 @@ public class StudentViewModel extends ViewModel {
             public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
 
                 try {
-                    if (response.isSuccessful()) {
-                        studentPostData.postValue(Resource.success(response.body()));
+                    if (response.body() != null) {
+                        Student body = response.body();
+                        studentPostData.setValue(Resource.success(body));
                     } else {
-                        studentPostData.setValue(Resource.error(Constant.SOMETHING_WRONG, response.body()));
+                        studentPostData.setValue(Resource.error(Constant.SOMETHING_WRONG, null));
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -156,10 +154,11 @@ public class StudentViewModel extends ViewModel {
             public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
 
                 try {
-                    if (response.isSuccessful()) {
-                        studentPatchData.postValue(Resource.success(response.body()));
+                    if (response.body() != null) {
+                        Student body = response.body();
+                        studentPatchData.setValue(Resource.success(body));
                     } else {
-                        studentPatchData.setValue(Resource.error(Constant.SOMETHING_WRONG, response.body()));
+                        studentPatchData.setValue(Resource.error(Constant.SOMETHING_WRONG, null));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -185,11 +184,11 @@ public class StudentViewModel extends ViewModel {
             public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
 
                 try {
-                    if (response.isSuccessful()) {
-//                        studentDeleteData.setValue(Resource.success(response.message().));
-//                        Toast.makeText(,Resource.success(Constant.SUCCESS), Toast.LENGTH_SHORT).show();
+                    if (response.body() != null) {
+                        Student body = response.body();
+                        studentDeleteData.setValue(Resource.success(body));
                     } else {
-                        studentDeleteData.setValue(Resource.error(Constant.SOMETHING_WRONG, response.body()));
+                        studentDeleteData.setValue(Resource.error(Constant.SOMETHING_WRONG, null));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

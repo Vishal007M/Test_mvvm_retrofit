@@ -46,16 +46,28 @@ public class MainActivity extends AppCompatActivity {
 
         //Get---------------------------------------------------------------------------------------------------------------------------------------------
         binding.GetData.setOnClickListener(v -> {
+            final int[] i = {0};
+
             listViewModel.getStudentListObserver().observe(this, finalData -> {
                 switch (finalData.status) {
                     case SUCCESS:
                         loadDetail(finalData.data);
+                        binding.noData.setVisibility(View.GONE);
+                        while (i[0] < 1) {
+                            Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
+                            i[0]++;
+                        }
                         break;
                     case LOADING:
 //                        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
                         break;
                     case ERROR:
-                        Toast.makeText(this, Constant.SOMETHING_WRONG, Toast.LENGTH_SHORT).show();
+                        loadDetail(finalData.data);
+                        binding.noData.setVisibility(View.VISIBLE);
+                        while (i[0] < 1) {
+                            Toast.makeText(this, Constant.NO_DATA, Toast.LENGTH_SHORT).show();
+                            i[0]++;
+                        }
                         break;
                 }
             });
@@ -65,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Get{id}---------------------------------------------------------------------------------------------------------------------------------------------
         binding.GetIdDate.setOnClickListener(v -> {
+            final int[] i = {0};
             StringDataChecking();
             if (addId.isEmpty()) {
                 binding.id.setError("Enter id first");
@@ -73,18 +86,26 @@ public class MainActivity extends AppCompatActivity {
                 listViewModel.GetStudentIdObserver().observe(this, new Observer<Resource<Student>>() {
                     @Override
                     public void onChanged(Resource<Student> studentResource) {
+
                         if (studentResource.data != null) {
                             binding.companyName.setText(studentResource.data.getCompany_name());
                             binding.companyEmail.setText(studentResource.data.getCompany_email());
                             binding.email.setText(studentResource.data.getEmail());
                             binding.password.setText(studentResource.data.getPassword());
                             binding.phone.setText(studentResource.data.getPhone());
-//                            Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
+                            while (i[0] < 1) {
+                                Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
                         } else {
-                            Toast.makeText(MainActivity.this, Constant.SOMETHING_WRONG, Toast.LENGTH_SHORT).show();
+                            while (i[0] < 1) {
+                                Toast.makeText(MainActivity.this, Constant.NO_DATA, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
                         }
                     }
                 });
+
                 listViewModel.makeApiCallById(Integer.parseInt(addId));
             }
 
@@ -93,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         //Post---------------------------------------------------------------------------------------------------------------------------------------------
         binding.PostDate.setOnClickListener(v -> {
             StringDataChecking();
-
+            final int[] i = {0};
             if (addId.isEmpty()) {
                 binding.id.setError("Enter Id!");
                 binding.id.requestFocus();
@@ -114,25 +135,34 @@ public class MainActivity extends AppCompatActivity {
                 binding.phone.requestFocus();
             } else {
                 Student student = new Student(Integer.parseInt(addId), addCompName, addCompEmail, addEmail, addPass, addPhone);
+
                 listViewModel.postStudentListObserver().observe(this, finalData -> {
                     switch (finalData.status) {
                         case SUCCESS:
-                            Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
+                            while (i[0] < 1) {
+                                Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
                             break;
                         case LOADING:
 //                        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
                             break;
                         case ERROR:
-                            Toast.makeText(this, Constant.SOMETHING_WRONG, Toast.LENGTH_SHORT).show();
+                            while (i[0] < 1) {
+                                Toast.makeText(this, Constant.NO_DATA, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
                             break;
                     }
                 });
                 listViewModel.makeApiAdd(student);
+
             }
         });
 
         //Patch---------------------------------------------------------------------------------------------------------------------------------------------
         binding.PatchData.setOnClickListener(v -> {
+            final int[] i = {0};
             StringDataChecking();
             if (addCompName.isEmpty()) {
                 addCompName = null;
@@ -153,35 +183,56 @@ public class MainActivity extends AppCompatActivity {
                 binding.id.setError("Enter id first");
             } else {
                 Student student = new Student(Integer.parseInt(addId), addCompName, addCompEmail, addEmail, addPass, addPhone);
-                listViewModel.patchStudentListObserver().observe(this, new Observer<Resource<Student>>() {
-                    @Override
-                    public void onChanged(Resource<Student> studentResource) {
-                        if (studentResource != null) {
-                            Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, Constant.SOMETHING_WRONG, Toast.LENGTH_SHORT).show();
-                        }
+
+                listViewModel.patchStudentListObserver().observe(this, finalData -> {
+                    switch (finalData.status) {
+                        case SUCCESS:
+                            while (i[0] < 1) {
+                                Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
+                            break;
+                        case LOADING:
+//                        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ERROR:
+                            while (i[0] < 1) {
+                                Toast.makeText(this, Constant.NO_DATA, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
+                            break;
                     }
                 });
+
                 listViewModel.makeApiPatch(Integer.parseInt(addId), student);
             }
         });
 
 
         binding.DeleteData.setOnClickListener(v -> {
+            final int[] i = {0};
             StringDataChecking();
 
             if (addId.isEmpty()) {
                 binding.id.setError("Enter id first");
             } else {
-                listViewModel.deleteStudentListObserver().observe(this, new Observer<Resource<Student>>() {
-                    @Override
-                    public void onChanged(Resource<Student> studentResource) {
-                        if (studentResource != null) {
-                            Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, Constant.SOMETHING_WRONG, Toast.LENGTH_SHORT).show();
-                        }
+                listViewModel.deleteStudentListObserver().observe(this, finalData -> {
+                    switch (finalData.status) {
+                        case SUCCESS:
+                            while (i[0] < 1) {
+                                Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
+                            break;
+                        case LOADING:
+//                        Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ERROR:
+                            while (i[0] < 1) {
+                                Toast.makeText(this, Constant.NO_DATA, Toast.LENGTH_SHORT).show();
+                                i[0]++;
+                            }
+                            break;
                     }
                 });
                 listViewModel.makeApiDelete(Integer.parseInt(addId));
@@ -190,11 +241,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void loadDetail(List<Student> data) {
         studentList = data;
         adapter.updateStudentList(data);
-        binding.noData.setVisibility(View.GONE);
-        Toast.makeText(MainActivity.this, Constant.SUCCESS, Toast.LENGTH_SHORT).show();
     }
 
     private void StringDataChecking() {

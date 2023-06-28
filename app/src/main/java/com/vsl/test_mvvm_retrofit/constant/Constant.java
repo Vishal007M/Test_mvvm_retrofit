@@ -6,7 +6,7 @@ public interface Constant {
     String NO_INTERNET = "No internet connection";
 
     String SUCCESS = "Success";
-
+    String NO_DATA = "Data is Empty";
     String SOMETHING_WRONG = "Something went wrong";
 
 }
